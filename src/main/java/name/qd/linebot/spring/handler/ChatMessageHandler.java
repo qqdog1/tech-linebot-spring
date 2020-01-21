@@ -17,13 +17,13 @@ public class ChatMessageHandler {
 	
 	@EventMapping
     public Message handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
-        log.info("event: " + event);
+        log.info("handleTextMessageEvent: " + event);
         final String originalMessageText = event.getMessage().getText();
         return new TextMessage(originalMessageText);
     }
 
     @EventMapping
     public void handleDefaultMessageEvent(Event event) {
-        System.out.println("event: " + event);
+    	log.info("handleDefaultMessageEvent: " + event);
     }
 }
