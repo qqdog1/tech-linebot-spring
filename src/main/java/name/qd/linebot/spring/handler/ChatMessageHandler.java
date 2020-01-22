@@ -27,7 +27,6 @@ public class ChatMessageHandler {
 
 	@EventMapping
 	public void handleDefaultMessageEvent(Event event) {
-		System.out.println("handleDefaultMessageEvent");
 		log.info("handleDefaultMessageEvent: " + event);
 	}
 }
