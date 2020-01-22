@@ -2,27 +2,37 @@ package name.qd.linebot.spring.handler;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.linecorp.bot.model.event.Event;
 import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
-import com.linecorp.bot.model.message.Message;
-import com.linecorp.bot.model.message.TextMessage;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
 
-@RestController
+import name.qd.linebot.spring.command.CommandDispatcher;
+
 @LineMessageHandler
-@RequestMapping("/")
 public class ChatMessageHandler {
 	private final Logger log = LoggerFactory.getLogger(ChatMessageHandler.class);
+	
+	private CommandDispatcher commandDispatcher;
+	
+	@Autowired
+	public ChatMessageHandler(CommandDispatcher commandDispatcher) {
+		this.commandDispatcher = commandDispatcher;
+	}
 
 	@EventMapping
-	public Message handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
-		final String originalMessageText = event.getMessage().getText();
-		return new TextMessage(originalMessageText);
+	public void handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
+		String text = event.getMessage().getText();
+		if(commandDispatcher.isAvailable(text)) {
+			commandDispatcher.execute(event);
+		}
+		// TODO check is vip
+		
+		// TODO do command
+		
 	}
 
 	@EventMapping
