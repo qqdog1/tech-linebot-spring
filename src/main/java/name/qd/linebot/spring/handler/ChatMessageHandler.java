@@ -27,12 +27,12 @@ public class ChatMessageHandler {
 	public void handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
 		String text = event.getMessage().getText();
 		if(commandDispatcher.isAvailable(text)) {
+			// TODO check is vip
+			
 			commandDispatcher.execute(event);
+		} else {
+			// TODO log message, maybe is personal message
 		}
-		// TODO check is vip
-		
-		// TODO do command
-		
 	}
 
 	@EventMapping

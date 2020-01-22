@@ -10,7 +10,7 @@ import com.linecorp.bot.model.message.TextMessage;
 import name.qd.linebot.spring.command.Command;
 
 public class HelpCommand implements Command {
-	private static final String HELP = "輸入 1 取得XXX %0D%0A 2 %0D%0A 3";
+	private static final String HELP = "輸入 1 取得XXX \n 2 \n 3";
 	
 	private LineMessagingClient lineMessagingClient;
 	
