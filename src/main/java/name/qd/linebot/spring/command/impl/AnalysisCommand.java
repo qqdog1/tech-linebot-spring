@@ -14,11 +14,16 @@ public class AnalysisCommand extends Command {
 
 	@Override
 	public String getCommandKey() {
-		return "-a";
+		return "analysis";
 	}
 
 	@Override
 	public void executeCommand(MessageEvent<TextMessageContent> event) {
 		
+	}
+
+	@Override
+	public String getDescription() {
+		return "取得分析數據";
 	}
 }

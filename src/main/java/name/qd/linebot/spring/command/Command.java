@@ -22,4 +22,5 @@ public abstract class Command {
 	
 	abstract public String getCommandKey();
 	abstract public void executeCommand(MessageEvent<TextMessageContent> event);
+	abstract public String getDescription();
 }

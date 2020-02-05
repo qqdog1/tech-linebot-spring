@@ -14,12 +14,17 @@ public class UIDCommand extends Command {
 
 	@Override
 	public String getCommandKey() {
-		return "-uid";
+		return "uid";
 	}
 
 	@Override
 	public void executeCommand(MessageEvent<TextMessageContent> event) {
 		String replyToken = event.getReplyToken();
 		sendReply(replyToken, event.getSource().getUserId());
+	}
+
+	@Override
+	public String getDescription() {
+		return "取得UserId";
 	}
 }
