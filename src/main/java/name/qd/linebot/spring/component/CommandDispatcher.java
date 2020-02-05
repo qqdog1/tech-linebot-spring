@@ -36,6 +36,10 @@ public class CommandDispatcher {
 	}
 
 	public boolean isAvailable(String text) {
+		String command = text.split(" ")[0];
+		if(command.equals("list")) {
+			return true;
+		}
 		return map.containsKey(text.split(" ")[0]);
 	}
 	
