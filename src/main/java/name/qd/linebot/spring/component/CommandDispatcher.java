@@ -26,12 +26,15 @@ public class CommandDispatcher {
 	@Autowired
 	private LineMessagingClient lineMessagingClient;
 	
+	@Autowired
+	private RequestQueueHandler requestQueueHandler;
+	
 	@PostConstruct
 	private void init() {
 		Command uidCommand = new UIDCommand(lineMessagingClient);
 		map.put(uidCommand.getCommandKey(), uidCommand);
 		
-		Command analysisCommand = new AnalysisCommand(lineMessagingClient);
+		Command analysisCommand = new AnalysisCommand(lineMessagingClient, requestQueueHandler);
 		map.put(analysisCommand.getCommandKey(), analysisCommand);
 	}
 

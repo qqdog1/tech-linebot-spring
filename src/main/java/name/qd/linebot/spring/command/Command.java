@@ -1,11 +1,10 @@
 package name.qd.linebot.spring.command;
 
 import com.linecorp.bot.client.LineMessagingClient;
-import com.linecorp.bot.model.ReplyMessage;
 import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
-import com.linecorp.bot.model.message.Message;
-import com.linecorp.bot.model.message.TextMessage;
+
+import name.qd.linebot.spring.util.LineUtils;
 
 public abstract class Command {
 	private LineMessagingClient lineMessagingClient;
@@ -15,10 +14,7 @@ public abstract class Command {
 	}
 	
 	protected void sendReply(MessageEvent<TextMessageContent> event, String text) {
-		String replyToken = event.getReplyToken();
-		Message message = new TextMessage(text);
-		ReplyMessage replyMessage = new ReplyMessage(replyToken, message);
-		lineMessagingClient.replyMessage(replyMessage);
+		LineUtils.sendReply(lineMessagingClient, event, text);
 	}
 	
 	abstract public String getCommandKey();
