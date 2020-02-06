@@ -14,7 +14,8 @@ public abstract class Command {
 		this.lineMessagingClient = lineMessagingClient;
 	}
 	
-	protected void sendReply(String replyToken, String text) {
+	protected void sendReply(MessageEvent<TextMessageContent> event, String text) {
+		String replyToken = event.getReplyToken();
 		Message message = new TextMessage(text);
 		ReplyMessage replyMessage = new ReplyMessage(replyToken, message);
 		lineMessagingClient.replyMessage(replyMessage);

@@ -19,8 +19,7 @@ public class UIDCommand extends Command {
 
 	@Override
 	public void executeCommand(MessageEvent<TextMessageContent> event) {
-		String replyToken = event.getReplyToken();
-		sendReply(replyToken, event.getSource().getUserId());
+		sendReply(event, event.getSource().getUserId());
 	}
 
 	@Override

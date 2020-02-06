@@ -19,6 +19,11 @@
 			<artifactId>line-bot-spring-boot</artifactId>
 			<version>3.3.1</version>
 		</dependency>
+		<dependency>
+			<groupId>name.qd</groupId>
+			<artifactId>technical-analysis-core</artifactId>
+			<version>1.0.2</version>
+		</dependency>
 	</dependencies>
 	
 	<build>
@@ -37,4 +42,11 @@
 			</plugin>
 		</plugins>
 	</build>
+	
+	<repositories>
+		<repository>
+			<id>github</id>
+			<url>https://maven.pkg.github.com/qqdog1/technical-analysis-core</url>
+		</repository>
+	</repositories>
 </project>
