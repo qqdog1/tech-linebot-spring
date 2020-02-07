@@ -35,10 +35,12 @@ public class ChipAnalyzeService {
 	private String cachePath;
 	@Value("${twse.data.path}")
 	private String twseDataPath;
+	@Value("${write.cache.file}")
+	private boolean isWriteCacheToFile;
 	
 	@PostConstruct
 	private void init() {
-		manager = new ChipAnalyzerManager(cachePath);
+		manager = new ChipAnalyzerManager(cachePath, isWriteCacheToFile);
 		cacheManager = CacheManager.getInstance();
 	}
 	

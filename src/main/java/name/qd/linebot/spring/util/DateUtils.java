@@ -18,7 +18,7 @@ import org.slf4j.LoggerFactory;
 
 import name.qd.analysis.Constants.Exchange;
 import name.qd.analysis.dataSource.TWSE.utils.TWSEPathUtil;
-import name.qd.analysis.utils.TimeUtil;
+import name.qd.analysis.utils.TimeUtils;
 
 public class DateUtils {
 	private static Logger logger = LoggerFactory.getLogger(DateUtils.class);
@@ -42,14 +42,22 @@ public class DateUtils {
 			List<String> lstFolder = new ArrayList<>();
 			
 			while(lstFolder.size() < days) {
-				lstFolder.addAll(getFolderListOfYear(year, path));
+				List<String> lstOfYear = getFolderListOfYear(year, path);
+				if(lstOfYear.size() == 0) {
+					break;
+				}
+				lstFolder.addAll(lstOfYear);
 				year = year - 1;
 			}
 			sortList(lstFolder);
 			
-			SimpleDateFormat sdf = TimeUtil.getDateFormat();
+			SimpleDateFormat sdf = TimeUtils.getDateFormat();
 			try {
-				lst.add(sdf.parse(lstFolder.get(days-1)));
+				if(lstFolder.size() < days) {
+					lst.add(sdf.parse(lstFolder.get(lstFolder.size()-1)));
+				} else {
+					lst.add(sdf.parse(lstFolder.get(days-1)));
+				}
 				lst.add(sdf.parse(lstFolder.get(0)));
 			} catch (ParseException e) {
 				logger.error("Parse time failed.", e);
@@ -64,7 +72,9 @@ public class DateUtils {
 		// list all folders in this year
 		List<String> lstYearFolder = new ArrayList<>();
 		try {
-			Files.list(pathYear).forEach(p -> lstYearFolder.add(p.getFileName().toString()));
+			if(Files.exists(pathYear)) {
+				Files.list(pathYear).forEach(p -> lstYearFolder.add(p.getFileName().toString()));
+			}
 		} catch (IOException e) {
 			logger.error("List all files failed. {}", pathYear.toString(), e);
 		}
@@ -77,8 +87,15 @@ public class DateUtils {
 			public int compare(String s1, String s2) {
 				Integer i1 = Integer.parseInt(s1);
 				Integer i2 = Integer.parseInt(s2);
-				return i1.compareTo(i2);
+				return i2.compareTo(i1);
 			}
 		});
+	}
+	
+	public static void main(String[] s) {
+		List<Date> lst = getFromToByDays("C:/qqdog1/file", "TWSE", 20);
+		for(Date date : lst) {
+			System.out.println(date);
+		}
 	}
 }
