@@ -14,11 +14,11 @@ public class CacheManager {
 	private CacheManager() {
 	}
 	
-	public void setAnalysisResult(String key, String value) {
+	public void put(String key, String value) {
 		mapAnalysisResult.put(key, value);
 	}
 	
-	public String getAnalysisResult(String key) {
+	public String get(String key) {
 		return mapAnalysisResult.get(key);
 	}
 	

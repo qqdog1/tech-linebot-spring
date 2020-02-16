@@ -4,21 +4,15 @@ import com.linecorp.bot.client.LineMessagingClient;
 import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
 
-import name.qd.analysis.Constants.Action;
-import name.qd.analysis.chip.ChipAnalyzers;
 import name.qd.linebot.spring.cache.CacheManager;
 import name.qd.linebot.spring.command.Command;
-import name.qd.linebot.spring.component.RequestQueueHandler;
-import name.qd.linebot.spring.vo.ClientAction;
 
 public class AnalysisCommand extends Command {
 	private CacheManager cacheManager = CacheManager.getInstance();
 	public static String BEST_BUY = "bestBuy";
 	public static String BEST_SELL = "bestSell";
 	
-	private RequestQueueHandler requestQueueHandler;
-	
-	public AnalysisCommand(LineMessagingClient lineMessagingClient, RequestQueueHandler requestQueueHandler) {
+	public AnalysisCommand(LineMessagingClient lineMessagingClient) {
 		super(lineMessagingClient);
 	}
 
@@ -45,36 +39,22 @@ public class AnalysisCommand extends Command {
 	}
 	
 	private void getBestBuy(MessageEvent<TextMessageContent> event) {
-		String result = cacheManager.getAnalysisResult(BEST_BUY);
+		String result = cacheManager.get(BEST_BUY);
 		
-		if(result == null) {
-			ClientAction clientAction = new ClientAction();
-			clientAction.setChipAnalyzers(ChipAnalyzers.BEST_BRANCH_BUY_SELL);
-			clientAction.setDays(20);
-			clientAction.setMarket("TWSE");
-			clientAction.setSide(Action.SELL);
-			clientAction.setTradeCost(3000000);
-			clientAction.setReplyToken(event.getReplyToken());
-			requestQueueHandler.putAction(clientAction);
-		} else {
+		if(result != null) {
 			sendReply(event, result);
+		} else {
+			sendReply(event, "尚無分析結果");
 		}
 	}
 	
 	private void getBestSell(MessageEvent<TextMessageContent> event) {
-		String result = cacheManager.getAnalysisResult(BEST_SELL);
+		String result = cacheManager.get(BEST_SELL);
 		
-		if(result == null) {
-			ClientAction clientAction = new ClientAction();
-			clientAction.setChipAnalyzers(ChipAnalyzers.BEST_BRANCH_BUY_SELL);
-			clientAction.setDays(20);
-			clientAction.setMarket("TWSE");
-			clientAction.setSide(Action.BUY);
-			clientAction.setTradeCost(3000000);
-			clientAction.setReplyToken(event.getReplyToken());
-			requestQueueHandler.putAction(clientAction);
-		} else {
+		if(result != null) {
 			sendReply(event, result);
+		} else {
+			sendReply(event, "尚無分析結果");
 		}
 	}
 	
