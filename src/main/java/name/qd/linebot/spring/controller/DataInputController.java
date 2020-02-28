@@ -4,13 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
 import name.qd.linebot.spring.service.DataInputService;
 
-@RestController
 @RequestMapping("/data")
-public class DataInputController {
+public class DataInputController extends GeneralExceptionController {
 	@Autowired
 	private DataInputService dataInputService;
 
