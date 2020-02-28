@@ -4,13 +4,12 @@ import com.linecorp.bot.client.LineMessagingClient;
 import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
 
+import name.qd.linebot.spring.Constants.CacheType;
 import name.qd.linebot.spring.cache.CacheManager;
 import name.qd.linebot.spring.command.Command;
 
 public class AnalysisCommand extends Command {
 	private CacheManager cacheManager = CacheManager.getInstance();
-	public static String BEST_BUY = "bestBuy";
-	public static String BEST_SELL = "bestSell";
 	
 	public AnalysisCommand(LineMessagingClient lineMessagingClient) {
 		super(lineMessagingClient);
@@ -39,7 +38,7 @@ public class AnalysisCommand extends Command {
 	}
 	
 	private void getBestBuy(MessageEvent<TextMessageContent> event) {
-		String result = cacheManager.get(BEST_BUY);
+		String result = cacheManager.get(CacheType.BEST_BUY.getType());
 		
 		if(result != null) {
 			sendReply(event, result);
@@ -49,7 +48,7 @@ public class AnalysisCommand extends Command {
 	}
 	
 	private void getBestSell(MessageEvent<TextMessageContent> event) {
-		String result = cacheManager.get(BEST_SELL);
+		String result = cacheManager.get(CacheType.BEST_SELL.getType());
 		
 		if(result != null) {
 			sendReply(event, result);
@@ -60,8 +59,8 @@ public class AnalysisCommand extends Command {
 	
 	private void getHelp(MessageEvent<TextMessageContent> event) {
 		StringBuilder sb = new StringBuilder();
-		sb.append("get bestbuy, 取得近20日前10名分公司，今日買進超過300萬\n");
-		sb.append("get bestsell, 取得近20日前10名分公司，今日賣出超過300萬\n");
+		sb.append("get bestbuy, 取得近20日前10名分公司，今日買進減賣出超過300萬\n");
+		sb.append("get bestsell, 取得近20日前10名分公司，今日賣出減買進超過300萬\n");
 		
 		sendReply(event, sb.toString());
 	}

@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class CacheManager {
 	private static CacheManager instance = new CacheManager();
-	private Map<String, String> mapAnalysisResult = new HashMap<>();
+	private Map<Integer, String> mapAnalysisResult = new HashMap<>();
 	
 	public static CacheManager getInstance() {
 		return instance;
@@ -14,11 +14,11 @@ public class CacheManager {
 	private CacheManager() {
 	}
 	
-	public void put(String key, String value) {
+	public void put(int key, String value) {
 		mapAnalysisResult.put(key, value);
 	}
 	
-	public String get(String key) {
+	public String get(int key) {
 		return mapAnalysisResult.get(key);
 	}
 	

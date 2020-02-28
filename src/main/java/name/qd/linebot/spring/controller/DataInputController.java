@@ -15,7 +15,7 @@ public class DataInputController {
 	private DataInputService dataInputService;
 
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
-	public void sendBroadcast(@RequestParam String key ,@RequestParam String value) {
-		dataInputService.updateCache(key, value);
+	public void sendBroadcast(@RequestParam String value) {
+		dataInputService.updateCache(value);
 	}
 }
