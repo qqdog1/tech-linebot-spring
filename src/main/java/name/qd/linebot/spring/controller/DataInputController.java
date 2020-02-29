@@ -17,7 +17,7 @@ public class DataInputController extends GeneralExceptionController {
 	private DataInputService dataInputService;
 
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
-	public void sendBroadcast(@RequestParam String value) throws JsonProcessingException {
-		dataInputService.updateCache(value);
+	public void sendBroadcast(@RequestParam String data) throws JsonProcessingException {
+		dataInputService.updateCache(data);
 	}
 }

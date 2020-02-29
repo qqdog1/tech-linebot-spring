@@ -9,19 +9,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.linecorp.bot.client.LineMessagingClient;
-import com.linecorp.bot.model.ReplyMessage;
 import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
-import com.linecorp.bot.model.message.Message;
-import com.linecorp.bot.model.message.TextMessage;
 
+import name.qd.linebot.spring.cache.CacheManager;
 import name.qd.linebot.spring.command.Command;
-import name.qd.linebot.spring.command.impl.AnalysisCommand;
 import name.qd.linebot.spring.command.impl.UIDCommand;
+import name.qd.linebot.spring.util.LineUtils;
+import name.qd.linebot.spring.vo.CacheResult;
 
 @Component
 public class CommandDispatcher {
 	private static Map<String, Command> map = new HashMap<>();
+	private CacheManager cacheManager = CacheManager.getInstance();
 	
 	@Autowired
 	private LineMessagingClient lineMessagingClient;
@@ -30,40 +30,40 @@ public class CommandDispatcher {
 	private void init() {
 		Command uidCommand = new UIDCommand(lineMessagingClient);
 		map.put(uidCommand.getCommandKey(), uidCommand);
-		
-		Command analysisCommand = new AnalysisCommand(lineMessagingClient);
-		map.put(analysisCommand.getCommandKey(), analysisCommand);
-	}
-
-	public boolean isAvailable(String text) {
-		String command = text.split(" ")[0];
-		if(command.equals("list")) {
-			return true;
-		}
-		return map.containsKey(text.split(" ")[0]);
 	}
 	
 	public void execute(MessageEvent<TextMessageContent> event) {
 		String text = event.getMessage().getText();
 		String command = text.split(" ")[0];
-		if(command.equals("list")) {
+		if(command.equals("help")) {
 			listAllCommand(event);
-		} else {
+		} else if(cacheManager.isCommandAvailable(command)) {
+			getCache(command, event.getReplyToken());
+		} else if(map.containsKey(command)) {
 			map.get(command).executeCommand(event);
 		}
 	}
 	
+	private void getCache(String command, String replyToken) {
+		CacheResult cacheResult = cacheManager.getCacheResult(command);
+		StringBuilder sb = new StringBuilder();
+		sb.append(command).append(" ").append(cacheResult.getLastUpdateTime()).append("\n");
+		sb.append(cacheResult.getValue());
+		
+		LineUtils.sendReply(lineMessagingClient, replyToken, sb.toString());
+	}
+	
 	private void listAllCommand(MessageEvent<TextMessageContent> event) {
 		StringBuilder sb = new StringBuilder();
+		// implement command
 		for(String command : map.keySet()) {
 			sb.append(command).append(": ");
 			sb.append(map.get(command).getDescription());
 			sb.append("\n");
 		}
-
-		String replyToken = event.getReplyToken();
-		Message message = new TextMessage(sb.toString());
-		ReplyMessage replyMessage = new ReplyMessage(replyToken, message);
-		lineMessagingClient.replyMessage(replyMessage);
+		// cache
+		sb.append(cacheManager.getAllDescription());
+		
+		LineUtils.sendReply(lineMessagingClient, event, sb.toString());
 	}
 }
