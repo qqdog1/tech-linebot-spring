@@ -18,7 +18,7 @@ public class DataInputService {
 	private ObjectMapper objectMapper = JsonUtils.getObjectMapper();
 	private CacheManager cacheManager = CacheManager.getInstance();
 	
-	public void updateCache(String value) {
+	public void updateCache(String value) throws JsonProcessingException {
 		try {
 			JsonNode node = objectMapper.readTree(value);
 			int type = node.get("type").asInt();
@@ -30,6 +30,7 @@ public class DataInputService {
 			}
 		} catch (JsonProcessingException e) {
 			log.error("Parse json failed. {}", value);
+			throw e;
 		}
 	}
 	
