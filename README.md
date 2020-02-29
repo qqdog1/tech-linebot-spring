@@ -2,13 +2,7 @@
 
 # tech-linebot-spring
 
-輸入help 取得所有command  
-
-輸入command help取得command說明  
-
-
-
-
+輸入help 取得所有command及說明  
 
 ---------
 ## APIs  
