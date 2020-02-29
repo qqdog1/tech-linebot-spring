@@ -44,6 +44,10 @@ public class CacheManager {
 		return map.keySet();
 	}
 	
+	public void remove(String command) {
+		map.remove(command);
+	}
+	
 	public void clear() {
 		map.clear();
 	}

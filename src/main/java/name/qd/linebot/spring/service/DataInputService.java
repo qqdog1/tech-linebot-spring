@@ -39,4 +39,8 @@ public class DataInputService {
 			throw e;
 		}
 	}
+	
+	public void removeCache(String command) {
+		cacheManager.remove(command);
+	}
 }
