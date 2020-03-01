@@ -22,18 +22,19 @@ public class DataInputService {
 		try {
 			JsonNode node = objectMapper.readTree(data);
 			
-			String time = node.get("lastUpdate").asText();
-			String description = node.get("description").asText();
-			String command = node.get("command").asText();
-			String value = node.get("value").asText();
-			
-			CacheResult cacheResult = cacheManager.getCacheResult(command);
-			
-			cacheResult.setCommand(command);
-			cacheResult.setDescription(description);
-			cacheResult.setLastUpdateTime(time);
-			cacheResult.setValue(value);
-			
+			for(JsonNode commandNode : node) {
+				String time = commandNode.get("lastUpdate").asText();
+				String description = commandNode.get("description").asText();
+				String command = commandNode.get("command").asText();
+				String value = commandNode.get("value").asText();
+				
+				CacheResult cacheResult = cacheManager.getCacheResult(command);
+				
+				cacheResult.setCommand(command);
+				cacheResult.setDescription(description);
+				cacheResult.setLastUpdateTime(time);
+				cacheResult.setValue(value);
+			}
 		} catch (JsonProcessingException e) {
 			log.error("Parse json failed. {}", data, e);
 			throw e;
