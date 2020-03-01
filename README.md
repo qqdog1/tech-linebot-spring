@@ -20,12 +20,14 @@ FormBody:
 <tr><td>data</td><td>要更新的內容(json format)</td></tr>
 </table>  
 
-    {
-      "description": "每日什麼什麼",
-      "lastUpdate": "2020/02/28",
-      "command": "bestsell",
-      "value": "1. 1101台 尼 \n 2. 2330台機電\n"
-    }
+    [
+        {
+          "description": "每日什麼什麼",
+          "lastUpdate": "2020/02/28",
+          "command": "bestsell",
+          "value": "1. 1101台 尼 \n2. 2330台機電\n"
+        }
+    ]
 
 ### DELETE /data/update  
 移除特定cache  
