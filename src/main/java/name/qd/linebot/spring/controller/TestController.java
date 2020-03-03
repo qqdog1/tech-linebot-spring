@@ -30,4 +30,19 @@ public class TestController extends GeneralExceptionController {
 		}
 		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
+	
+	@RequestMapping(value = "write", method = RequestMethod.POST)
+	public ResponseEntity<String> write(@RequestParam String text) {
+		// write file
+		if(testService.writeFile(text)) {
+			return new ResponseEntity<>(HttpStatus.OK);
+		}
+		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+	}
+	
+	@RequestMapping(value = "read", method = RequestMethod.GET)
+	public ResponseEntity<String> read() {
+		String fileText = testService.readFile();
+		return new ResponseEntity<>(fileText, HttpStatus.OK);
+	}
 }
