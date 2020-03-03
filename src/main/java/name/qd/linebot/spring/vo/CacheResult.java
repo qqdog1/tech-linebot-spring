@@ -5,6 +5,7 @@ public class CacheResult {
 	private String command;
 	private String value;
 	private String description;
+	private CacheResult cacheResult;
 	
 	public String getLastUpdateTime() {
 		return lastUpdateTime;
@@ -29,5 +30,11 @@ public class CacheResult {
 	}
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	public CacheResult getCacheResult() {
+		return cacheResult;
+	}
+	public void setCacheResult(CacheResult cacheResult) {
+		this.cacheResult = cacheResult;
 	}
 }
