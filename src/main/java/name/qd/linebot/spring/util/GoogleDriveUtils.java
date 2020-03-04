@@ -1,11 +1,11 @@
 package name.qd.linebot.spring.util;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.OutputStream;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -124,8 +124,10 @@ public class GoogleDriveUtils {
 	
 	public File get(String fileId) {
 		try {
-			com.google.api.services.drive.model.File googleFile = drive.files().get(fileId).execute();
-		
+			OutputStream outputStream = new ByteArrayOutputStream();
+			drive.files().get(fileId).executeMediaAndDownloadTo(outputStream);
+
+			
 		} catch (IOException e) {
 			log.error("Get file from google drive failed. id:{}", fileId);
 		}
