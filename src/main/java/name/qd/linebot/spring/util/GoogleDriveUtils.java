@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,7 +25,6 @@ import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.drive.Drive;
-import com.google.api.services.drive.Drive.Files;
 import com.google.api.services.drive.DriveScopes;
 import com.google.api.services.drive.model.FileList;
 
@@ -122,12 +120,12 @@ public class GoogleDriveUtils {
 		return null;
 	}
 	
-	public File get(String fileId) {
+	public String readFile(String fileId) {
 		try {
-			OutputStream outputStream = new ByteArrayOutputStream();
+			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 			drive.files().get(fileId).executeMediaAndDownloadTo(outputStream);
 
-			
+			return new String(outputStream.toByteArray());
 		} catch (IOException e) {
 			log.error("Get file from google drive failed. id:{}", fileId);
 		}
