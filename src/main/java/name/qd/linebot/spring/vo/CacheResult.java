@@ -9,7 +9,7 @@ public class CacheResult {
 	private String command;
 	private String value;
 	private String description;
-	private Map<String, CacheResult> mapCacheResult = new HashMap<>();
+	private Map<String, CacheResult> nextCommands = new HashMap<>();
 	
 	public String getLastUpdateTime() {
 		return lastUpdateTime;
@@ -36,22 +36,22 @@ public class CacheResult {
 		this.description = description;
 	}
 	public Set<String> getKeys() {
-		return mapCacheResult.keySet();
+		return nextCommands.keySet();
 	}
 	public boolean remove(String command) {
-		if(mapCacheResult.containsKey(command)) {
-			mapCacheResult.remove(command);
+		if(nextCommands.containsKey(command)) {
+			nextCommands.remove(command);
 			return true;
 		}
 		return false;
 	}
 	public boolean isCommandAvailable(String command) {
-		return mapCacheResult.containsKey(command);
+		return nextCommands.containsKey(command);
 	}
 	public CacheResult getCacheResult(String command) {
-		return mapCacheResult.get(command);
+		return nextCommands.get(command);
 	}
 	public void setCacheResult(Map<String, CacheResult> map) {
-		this.mapCacheResult = map;
+		this.nextCommands = map;
 	}
 }
