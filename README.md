@@ -38,13 +38,13 @@ FormBody:
 
 --------  
 ## Test APIs  
-### POST /test/write  
+### ~~POST /test/write  
 寫檔測試  
 FormBody:  
 <table>  
 <tr><td>text</td><td>要寫檔的內容</td></tr>
 </table>  
 
-### GET /test/read  
+### ~~GET /test/read  
 讀檔測試  
 取得寫檔的內容  
