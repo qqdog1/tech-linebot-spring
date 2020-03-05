@@ -1,6 +1,5 @@
 package name.qd.linebot.spring.vo;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -39,8 +38,12 @@ public class CacheResult {
 	public Set<String> getKeys() {
 		return mapCacheResult.keySet();
 	}
-	public void remove(String command) {
-		mapCacheResult.remove(command);
+	public boolean remove(String command) {
+		if(mapCacheResult.containsKey(command)) {
+			mapCacheResult.remove(command);
+			return true;
+		}
+		return false;
 	}
 	public boolean isCommandAvailable(String command) {
 		return mapCacheResult.containsKey(command);

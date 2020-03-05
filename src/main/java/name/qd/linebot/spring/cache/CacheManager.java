@@ -32,10 +32,8 @@ public class CacheManager {
 	public CacheResult getCacheResult(String ... commands) {
 		CacheResult cacheResult = rootCacheResult;
 		for(String command : commands) {
-			CacheResult nextResult = getCacheResult(rootCacheResult, command);
-			if(nextResult != null) {
-				cacheResult = nextResult;
-			} else {
+			cacheResult = getCacheResult(rootCacheResult, command);
+			if(cacheResult == null) {
 				break;
 			}
 		}
@@ -67,12 +65,21 @@ public class CacheManager {
 		return cacheResult.isCommandAvailable(command);
 	}
 	
-	public void remove(String ... commands) {
-		// TODO
+	public boolean remove(String ... commands) {
+		int size = commands.length;
+		
+		CacheResult cacheResult = rootCacheResult;
+		for(int i = 0 ; i < size-2 ; i++) {
+			cacheResult = getCacheResult(cacheResult, commands[i]);
+			if(cacheResult == null) {
+				return false;
+			}
+		}
+		return cacheResult.remove(commands[size-1]);
 	}
 	
 	public void remove(CacheResult cacheResult, String command) {
-		// TODO
+		cacheResult.remove(command);
 	}
 	
 	public void clear() {
