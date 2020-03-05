@@ -5,6 +5,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -82,6 +85,9 @@ public class GoogleDriveUtils {
 			FileList fileList = googleList.execute();
 			
 			if(fileList.size() > 0) {
+				if(fileList.size() > 1) {
+					log.warn("Multiple files on google drive with same name. Get first one. name:{}", name);
+				}
 				return fileList.getFiles().get(0).getId();
 			}
 		} catch (IOException e) {
@@ -147,6 +153,34 @@ public class GoogleDriveUtils {
 		String folderId = "1chbOmupdFnC5lYdj5GDeNKowj-TYG1UJ";
 		try {
 			GoogleDriveUtils googleDrive = new GoogleDriveUtils("./config/credentials.json", "GOGOApi");
+			
+			Path path = Paths.get("./abc.txt");
+			Files.createFile(path);
+			Files.write(path, "ababababab".getBytes());
+			
+			File file = new File("./abc.txt");
+			
+			// new file
+			System.out.println("Upload file.");
+			String fileId = googleDrive.upload(folderId, file);
+			System.out.println("Success, file id:" + fileId);
+			// new again, diff text
+			
+			// new file without folder id
+			
+			// get file by name
+			
+			// get file by folder and name
+			
+			// remove file
+			
+			// get file id
+			
+			// 
+			
+			
+			
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
