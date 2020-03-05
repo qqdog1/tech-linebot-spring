@@ -23,6 +23,18 @@ public class DataInputService {
 			JsonNode node = objectMapper.readTree(data);
 			
 			for(JsonNode commandNode : node) {
+				
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
 				String time = commandNode.get("lastUpdate").asText();
 				String description = commandNode.get("description").asText();
 				String command = commandNode.get("command").asText();
@@ -41,7 +53,7 @@ public class DataInputService {
 		}
 	}
 	
-	public void removeCache(String command) {
-		cacheManager.remove(command);
+	public void removeCache(String ... commands) {
+		cacheManager.remove(commands);
 	}
 }

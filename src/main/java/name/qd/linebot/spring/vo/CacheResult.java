@@ -1,11 +1,16 @@
 package name.qd.linebot.spring.vo;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
 public class CacheResult {
 	private String lastUpdateTime;
 	private String command;
 	private String value;
 	private String description;
-	private CacheResult cacheResult;
+	private Map<String, CacheResult> mapCacheResult = new HashMap<>();
 	
 	public String getLastUpdateTime() {
 		return lastUpdateTime;
@@ -31,10 +36,19 @@ public class CacheResult {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public CacheResult getCacheResult() {
-		return cacheResult;
+	public Set<String> getKeys() {
+		return mapCacheResult.keySet();
 	}
-	public void setCacheResult(CacheResult cacheResult) {
-		this.cacheResult = cacheResult;
+	public void remove(String command) {
+		mapCacheResult.remove(command);
+	}
+	public boolean isCommandAvailable(String command) {
+		return mapCacheResult.containsKey(command);
+	}
+	public CacheResult getCacheResult(String command) {
+		return mapCacheResult.get(command);
+	}
+	public void setCacheResult(Map<String, CacheResult> map) {
+		this.mapCacheResult = map;
 	}
 }

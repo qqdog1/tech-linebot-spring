@@ -22,7 +22,8 @@ public class DataInputController extends GeneralExceptionController {
 	}
 	
 	@RequestMapping(value = "/update", method = RequestMethod.DELETE)
-	public void removeCache(@RequestParam String command) {
-		dataInputService.removeCache(command);
+	public void removeCache(@RequestParam String ... commands) {
+		// TODO
+//		dataInputService.removeCache(commands);
 	}
 }

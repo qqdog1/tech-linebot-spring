@@ -34,20 +34,20 @@ public class CommandDispatcher {
 	
 	public void execute(MessageEvent<TextMessageContent> event) {
 		String text = event.getMessage().getText();
-		String command = text.split(" ")[0];
-		if(command.equals("help")) {
+		String[] commands = text.split(" ");
+		if(commands[0].equals("help")) {
 			listAllCommand(event);
-		} else if(cacheManager.isCommandAvailable(command)) {
-			getCache(command, event.getReplyToken());
-		} else if(map.containsKey(command)) {
-			map.get(command).executeCommand(event);
+		} else if(cacheManager.isCommandAvailable(commands[0])) {
+			getCache(event.getReplyToken(), commands);
+		} else if(map.containsKey(commands[0])) {
+			map.get(commands[0]).executeCommand(event);
 		}
 	}
 	
-	private void getCache(String command, String replyToken) {
-		CacheResult cacheResult = cacheManager.getCacheResult(command);
+	private void getCache(String replyToken, String ... commands) {
+		CacheResult cacheResult = cacheManager.getCacheResult(commands);
 		StringBuilder sb = new StringBuilder();
-		sb.append(command).append(" ").append(cacheResult.getLastUpdateTime()).append("\n");
+		sb.append(cacheResult.getLastUpdateTime()).append("\n");
 		sb.append(cacheResult.getValue());
 		
 		LineUtils.sendReply(lineMessagingClient, replyToken, sb.toString());
