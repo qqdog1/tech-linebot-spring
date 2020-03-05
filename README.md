@@ -35,16 +35,3 @@ FormBody:
 <table>
 <tr><td>command</td><td>要移除的command</td></tr>
 </table>  
-
---------  
-## Test APIs  
-### ~~POST /test/write  
-寫檔測試  
-FormBody:  
-<table>  
-<tr><td>text</td><td>要寫檔的內容</td></tr>
-</table>  
-
-### ~~GET /test/read  
-讀檔測試  
-取得寫檔的內容  
