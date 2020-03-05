@@ -84,8 +84,10 @@ public class GoogleDriveUtils {
 			googleList = googleList.setQ("name='" + name + "'");
 			FileList fileList = googleList.execute();
 			
-			if(fileList.size() > 0) {
-				if(fileList.size() > 1) {
+			List<com.google.api.services.drive.model.File> lstGoogleFile = fileList.getFiles();
+			
+			if(lstGoogleFile.size() > 0) {
+				if(lstGoogleFile.size() > 1) {
 					log.warn("Multiple files on google drive with same name. Get first one. name:{}", name);
 				}
 				return fileList.getFiles().get(0).getId();
@@ -94,6 +96,10 @@ public class GoogleDriveUtils {
 			log.error("Query google drive failed. folderId:{}, name:{}", folderId, name, e);
 		}
 		return null;
+	}
+	
+	public String upload(File file) {
+		return upload(null, file);
 	}
 	
 	public String upload(String folderId, File file) {
@@ -155,8 +161,9 @@ public class GoogleDriveUtils {
 			GoogleDriveUtils googleDrive = new GoogleDriveUtils("./config/credentials.json", "GOGOApi");
 			
 			Path path = Paths.get("./abc.txt");
+			Files.deleteIfExists(path);
 			Files.createFile(path);
-			Files.write(path, "ababababab".getBytes());
+			Files.write(path, "11111111111111111".getBytes());
 			
 			File file = new File("./abc.txt");
 			
@@ -164,22 +171,35 @@ public class GoogleDriveUtils {
 			System.out.println("Upload file.");
 			String fileId = googleDrive.upload(folderId, file);
 			System.out.println("Success, file id:" + fileId);
+			
 			// new again, diff text
+			Files.write(path, "2222222222222222222".getBytes());
+			file = new File("./abc.txt");
+			
+			System.out.println("Upload file again.");
+			fileId = googleDrive.upload(folderId, file);
+			System.out.println("Success, file id:" + fileId);
 			
 			// new file without folder id
+//			System.out.println("Upload file without folder id.");
+//			fileId = googleDrive.upload(file);
+//			System.out.println("Success, file id:" + fileId);
 			
-			// get file by name
+			// get file id by name
+			fileId = googleDrive.getFileId("abc.txt");
+			System.out.println("file id:" + fileId);
 			
-			// get file by folder and name
+			// get file id by folder and name
+			fileId = googleDrive.getFileId(folderId, "abc.txt");
+			System.out.println("file id:" + fileId);
+			
+			// get file
+			String value = googleDrive.readFile(fileId);
+			System.out.println("Read file: " + value);
 			
 			// remove file
-			
-			// get file id
-			
-			// 
-			
-			
-			
+			boolean isSuccess = googleDrive.remove(fileId);
+			System.out.println("remove file:" + isSuccess);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
