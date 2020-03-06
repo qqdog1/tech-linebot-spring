@@ -15,7 +15,7 @@ public class CacheManager {
 	private CacheManager() {
 	}
 	
-	public void setCacheResult(CacheResult cacheResult) {
+	public void updateCacheResult(CacheResult cacheResult) {
 		this.cacheResult = cacheResult;
 	}
 	
