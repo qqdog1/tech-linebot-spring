@@ -38,6 +38,9 @@ public class CacheResult {
 	public Set<String> getKeys() {
 		return nextCommands.keySet();
 	}
+	public Map<String, CacheResult> getNextCommands() {
+		return nextCommands;
+	}
 	public boolean remove(String command) {
 		if(nextCommands.containsKey(command)) {
 			nextCommands.remove(command);

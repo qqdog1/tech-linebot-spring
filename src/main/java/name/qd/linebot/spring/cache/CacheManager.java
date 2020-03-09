@@ -2,6 +2,9 @@ package name.qd.linebot.spring.cache;
 
 import java.util.Set;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import name.qd.linebot.spring.vo.CacheResult;
 
 public class CacheManager {
@@ -92,5 +95,51 @@ public class CacheManager {
 	
 	public void remove(CacheResult cacheResult, String command) {
 		cacheResult.remove(command);
+	}
+
+	public static void main(String[] s) {
+		xytotal(1,1,3);
+		
+//		CacheResult cacheResult = createCacheResult(1, 1, 3);
+//		
+//		ObjectMapper objectMapper = new ObjectMapper();
+//		
+//		try {
+//			System.out.println(objectMapper.writeValueAsString(cacheResult));
+//		} catch (JsonProcessingException e) {
+//			e.printStackTrace();
+//		}
+	}
+	
+	private static void xytotal(int x, int y, int total) {
+		System.out.println(x + ":" + y + ":" + total);
+		
+		
+	}
+	
+	private static CacheResult createCacheResult(int x, int y, int total) {
+		System.out.println(x + ":" + y + ":" + total);
+		CacheResult cacheResult = new CacheResult();
+		String text = x+"-"+y;
+		cacheResult.setCommand(text);
+		cacheResult.setDescription(text);
+		cacheResult.setLastUpdateTime(text);
+		cacheResult.setValue(text);
+		
+		if(x == y && total > x) {
+			x++;
+			CacheResult nextCacheResult = createCacheResult(x, 1, total);
+			cacheResult.addCacheResult(text, nextCacheResult);
+		} else if(x > y && total > x) {
+			x++;
+			CacheResult nextCacheResult = createCacheResult(x, 1, total);
+			cacheResult.addCacheResult(text, nextCacheResult);
+		} else if(x == total) {
+			y++;
+			CacheResult nextCacheResult = createCacheResult(x, y, total);
+			cacheResult.addCacheResult(text, nextCacheResult);
+		}
+		
+		return cacheResult;
 	}
 }
