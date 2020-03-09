@@ -16,12 +16,12 @@ public class DataInputController extends GeneralExceptionController {
 	@Autowired
 	private DataInputService dataInputService;
 
-	@RequestMapping(value = "/update", method = RequestMethod.POST)
+	@RequestMapping(value = "", method = RequestMethod.POST)
 	public void updateCache(@RequestParam String data) throws JsonProcessingException {
 		dataInputService.updateCache(data);
 	}
 	
-	@RequestMapping(value = "/update", method = RequestMethod.DELETE)
+	@RequestMapping(value = "", method = RequestMethod.DELETE)
 	public void removeCache(@RequestParam String ... commands) {
 		dataInputService.removeCache(commands);
 	}

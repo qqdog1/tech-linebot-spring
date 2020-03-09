@@ -45,13 +45,16 @@ public class CacheResult {
 		}
 		return false;
 	}
+	public boolean hasNext() {
+		return nextCommands.size() > 0;
+	}
 	public boolean isCommandAvailable(String command) {
 		return nextCommands.containsKey(command);
 	}
 	public CacheResult getCacheResult(String command) {
 		return nextCommands.get(command);
 	}
-	public void setCacheResult(Map<String, CacheResult> map) {
-		this.nextCommands = map;
+	public void addCacheResult(String command, CacheResult cacheResult) {
+		nextCommands.put(command, cacheResult);
 	}
 }

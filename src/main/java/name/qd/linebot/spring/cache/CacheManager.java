@@ -16,7 +16,27 @@ public class CacheManager {
 	}
 	
 	public void updateCacheResult(CacheResult cacheResult) {
-		this.cacheResult = cacheResult;
+		if(this.cacheResult == null) {
+			this.cacheResult = cacheResult;
+		} else {
+			updateCacheResult(this.cacheResult, cacheResult);
+		}
+	}
+	
+	private void updateCacheResult(CacheResult cacheResult, CacheResult newCacheResult) {
+		cacheResult.setCommand(newCacheResult.getCommand());
+		cacheResult.setDescription(newCacheResult.getDescription());
+		cacheResult.setLastUpdateTime(newCacheResult.getLastUpdateTime());
+		cacheResult.setValue(newCacheResult.getValue());
+		
+		if(newCacheResult.hasNext()) {
+			for(String command : newCacheResult.getKeys()) {
+				if(!cacheResult.isCommandAvailable(command)) {
+					cacheResult.addCacheResult(command, new CacheResult());
+				}
+				updateCacheResult(cacheResult.getCacheResult(command), newCacheResult.getCacheResult(command));
+			}
+		}
 	}
 	
 	public CacheResult getCacheResult(CacheResult cacheResult, String command) {
