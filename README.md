@@ -13,7 +13,7 @@ FormBody:
 <tr><td>text</td><td>要廣播的訊息</td></tr>
 </table>  
 
-### POST /data/update  
+### POST /data  
 更新cache  
 FormBody:  
 <table>  
@@ -29,7 +29,7 @@ FormBody:
         }
     ]
 
-### DELETE /data/update  
+### DELETE /data  
 移除特定cache  
 FormBody:  
 <table>
