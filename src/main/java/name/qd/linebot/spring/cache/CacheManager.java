@@ -114,6 +114,13 @@ public class CacheManager {
 	private static void xytotal(int x, int y, int total) {
 		System.out.println(x + ":" + y + ":" + total);
 		
+		if(x < total) {
+			x++;
+			xytotal(x,y,total);
+		}
+		
+		
+		
 		if(x == y && x < total) {
 			x++;
 			xytotal(x,y,total);
