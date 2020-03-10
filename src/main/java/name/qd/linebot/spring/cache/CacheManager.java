@@ -33,7 +33,7 @@ public class CacheManager {
 		cacheResult.setValue(newCacheResult.getValue());
 		
 		if(newCacheResult.hasNext()) {
-			for(String command : newCacheResult.getKeys()) {
+			for(String command : newCacheResult.keys()) {
 				if(!cacheResult.isCommandAvailable(command)) {
 					cacheResult.addCacheResult(command, new CacheResult());
 				}
@@ -70,7 +70,7 @@ public class CacheManager {
 	}
 	
 	public Set<String> getAllCommand() {
-		return cacheResult.getKeys();
+		return cacheResult.keys();
 	}
 	
 	public boolean isCommandAvailable(String command) {
@@ -96,66 +96,52 @@ public class CacheManager {
 	public void remove(CacheResult cacheResult, String command) {
 		cacheResult.remove(command);
 	}
-
+	
 	public static void main(String[] s) {
-		xytotal(1,1,3);
+		String jsonString = "{\"lastUpdateTime\": \"1-1\",\"command\": \"1-1\",\"value\": \"1-1\",\"description\": \"1-1\"," + 
+				"\"nextCommands\": {\"1-1\": {\"lastUpdateTime\": \"2-1\",\"command\": \"2-1\",\"value\": \"2-1\"," + 
+				"\"description\": \"2-1\",\"nextCommands\": {\"2-1\": {\"lastUpdateTime\": \"2-2\",\"command\": \"2-2\"," + 
+				"\"value\": \"2-2\",\"description\": \"2-2\",\"nextCommands\": {\"3-1\": {\"lastUpdateTime\": \"3-1\"," + 
+				"\"command\": \"3-1\",\"value\": \"3-1\",\"description\": \"3-1\",\"nextCommands\": {}}," + 
+				"\"3-2\": {\"lastUpdateTime\": \"3-2\",\"command\": \"3-2\",\"value\": \"3-2\",\"description\": \"3-2\"," + 
+				"\"nextCommands\": {}},\"3-3\": {\"lastUpdateTime\": \"3-3\",\"command\": \"3-3\",\"value\": \"3-3\"," + 
+				"\"description\": \"3-3\",\"nextCommands\": {}}}},\"2-2\": {\"lastUpdateTime\": \"3-0\",\"command\": \"3-0\"," + 
+				"\"value\": \"3-0\",\"description\": \"3-0\",\"nextCommands\": {\"3-1\": {\"lastUpdateTime\": \"3-1\"," + 
+				"\"command\": \"3-1\",\"value\": \"3-1\",\"description\": \"3-1\",\"nextCommands\": {}},\"3-2\": {" + 
+				"\"lastUpdateTime\": \"3-2\",\"command\": \"3-2\",\"value\": \"3-2\",\"description\": \"3-2\"," + 
+				"\"nextCommands\": {}},\"3-3\": {\"lastUpdateTime\": \"3-3\",\"command\": \"3-3\"," + 
+				"\"value\": \"3-3\",\"description\": \"3-3\",\"nextCommands\": {}}}}}}}}";
 		
-//		CacheResult cacheResult = createCacheResult(1, 1, 3);
-//		
-//		ObjectMapper objectMapper = new ObjectMapper();
-//		
-//		try {
-//			System.out.println(objectMapper.writeValueAsString(cacheResult));
-//		} catch (JsonProcessingException e) {
-//			e.printStackTrace();
-//		}
-	}
-	
-	private static void xytotal(int x, int y, int total) {
-		System.out.println(x + ":" + y + ":" + total);
+		String jsonString2 = "{\"lastUpdateTime\": \"1-1\",\"command\": \"1-1\",\"value\": \"1-1\",\r\n" + 
+				"\"description\": \"1-1\",\"nextCommands\": {\"1-1\": {\"lastUpdateTime\": \"2-1\",\r\n" + 
+				"\"command\": \"2-1\",\"value\": \"2-1\",\"description\": \"2-1\",\"nextCommands\": {\r\n" + 
+				"\"2-1\": {\"lastUpdateTime\": \"2-2\",\"command\": \"2-2\",\"value\": \"2-2\",\r\n" + 
+				"\"description\": \"2-2\",\"nextCommands\": {\"aa\": {\"lastUpdateTime\": \"al\",\r\n" + 
+				"\"command\": \"ac\",\"value\": \"av\",\"description\": \"ad\",\"nextCommands\": {}\r\n" + 
+				"},\"bb\": {\"lastUpdateTime\": \"bl\",\"command\": \"bc\",\"value\": \"bv\",\r\n" + 
+				"\"description\": \"bd\",\"nextCommands\": {}},\"cc\": {\"lastUpdateTime\": \"cl\",\r\n" + 
+				"\"command\": \"cc\",\"value\": \"cv\",\"description\": \"cd\",\"nextCommands\": {}}}}}}}}";
 		
-		if(x < total) {
-			x++;
-			xytotal(x,y,total);
+		ObjectMapper objectMapper = new ObjectMapper();
+		try {
+			CacheResult cacheResult = objectMapper.readValue(jsonString, CacheResult.class);
+			CacheResult newCacheResult = objectMapper.readValue(jsonString2, CacheResult.class);
+			
+			CacheManager cacheManager = new CacheManager();
+			
+			cacheManager.updateCacheResult(cacheResult);
+			
+			
+			
+			cacheManager.updateCacheResult(newCacheResult);
+			
+			String[] commands = {"1-1"};
+			CacheResult c = cacheManager.getCacheResult(commands);
+			
+			System.out.println(objectMapper.writeValueAsString(c));
+			
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
 		}
-		
-		
-		
-		if(x == y && x < total) {
-			x++;
-			xytotal(x,y,total);
-		} else if(x > y && x < total) {
-			x++;
-			xytotal(x,y,total);
-		} else if(x == total && x > y) {
-			y++;
-			xytotal(x,y,total);
-		}
-	}
-	
-	private static CacheResult createCacheResult(int x, int y, int total) {
-		System.out.println(x + ":" + y + ":" + total);
-		CacheResult cacheResult = new CacheResult();
-		String text = x+"-"+y;
-		cacheResult.setCommand(text);
-		cacheResult.setDescription(text);
-		cacheResult.setLastUpdateTime(text);
-		cacheResult.setValue(text);
-		
-		if(x == y && total > x) {
-			x++;
-			CacheResult nextCacheResult = createCacheResult(x, 1, total);
-			cacheResult.addCacheResult(text, nextCacheResult);
-		} else if(x > y && total > x) {
-			x++;
-			CacheResult nextCacheResult = createCacheResult(x, 1, total);
-			cacheResult.addCacheResult(text, nextCacheResult);
-		} else if(x == total-1) {
-			y++;
-			CacheResult nextCacheResult = createCacheResult(x, y, total);
-			cacheResult.addCacheResult(text, nextCacheResult);
-		}
-		
-		return cacheResult;
 	}
 }

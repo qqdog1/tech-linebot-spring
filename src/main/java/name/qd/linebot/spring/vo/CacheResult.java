@@ -35,7 +35,7 @@ public class CacheResult {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public Set<String> getKeys() {
+	public Set<String> keys() {
 		return nextCommands.keySet();
 	}
 	public Map<String, CacheResult> getNextCommands() {
