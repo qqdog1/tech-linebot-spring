@@ -12,16 +12,18 @@ import com.linecorp.bot.client.LineMessagingClient;
 import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
 
-import name.qd.linebot.spring.cache.CacheManager;
 import name.qd.linebot.spring.command.Command;
 import name.qd.linebot.spring.command.impl.UIDCommand;
+import name.qd.linebot.spring.service.CacheManageService;
 import name.qd.linebot.spring.util.LineUtils;
 import name.qd.linebot.spring.vo.CacheResult;
 
 @Component
 public class CommandDispatcher {
 	private static Map<String, Command> mapSystemCommand = new HashMap<>();
-	private CacheManager cacheManager = CacheManager.getInstance();
+	
+	@Autowired
+	private CacheManageService cacheManageService;
 	
 	@Autowired
 	private LineMessagingClient lineMessagingClient;
@@ -37,7 +39,7 @@ public class CommandDispatcher {
 		String[] commands = text.split(" ");
 		if(commands[0].equals("help")) {
 			listAllCommand(event);
-		} else if(cacheManager.isCommandAvailable(commands[0])) {
+		} else if(cacheManageService.isCommandAvailable(commands[0])) {
 			getCache(event.getReplyToken(), commands);
 		} else if(mapSystemCommand.containsKey(commands[0])) {
 			mapSystemCommand.get(commands[0]).executeCommand(event);
@@ -45,7 +47,7 @@ public class CommandDispatcher {
 	}
 	
 	private void getCache(String replyToken, String ... commands) {
-		CacheResult cacheResult = cacheManager.getCacheResult(commands);
+		CacheResult cacheResult = cacheManageService.getCacheResult(commands);
 		StringBuilder sb = new StringBuilder();
 		sb.append(cacheResult.getLastUpdateTime()).append("\n");
 		sb.append(cacheResult.getValue());
@@ -62,7 +64,7 @@ public class CommandDispatcher {
 			sb.append("\n");
 		}
 		// cache
-		sb.append(cacheManager.getAllDescription());
+		sb.append(cacheManageService.getAllDescription());
 		
 		LineUtils.sendReply(lineMessagingClient, event, sb.toString());
 	}

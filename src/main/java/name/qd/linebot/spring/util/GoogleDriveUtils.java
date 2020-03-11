@@ -98,6 +98,26 @@ public class GoogleDriveUtils {
 		return null;
 	}
 	
+	public String upload(String folderId, String data, String fileName) {
+		Path path = Paths.get(fileName);
+		try {
+			Files.createFile(path);
+		} catch (IOException e) {
+			log.error("Create file failed. {}", fileName);
+			return null;
+		}
+		
+		try {
+			Files.write(path, data.getBytes());
+		} catch (IOException e) {
+			log.error("Write data to file failed. {}", fileName);
+		}
+		
+		File file = new File(fileName);
+		
+		return upload(folderId, file);
+	}
+	
 	public String upload(File file) {
 		return upload(null, file);
 	}
