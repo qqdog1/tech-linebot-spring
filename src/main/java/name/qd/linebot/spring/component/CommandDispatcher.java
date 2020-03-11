@@ -20,7 +20,7 @@ import name.qd.linebot.spring.vo.CacheResult;
 
 @Component
 public class CommandDispatcher {
-	private static Map<String, Command> map = new HashMap<>();
+	private static Map<String, Command> mapSystemCommand = new HashMap<>();
 	private CacheManager cacheManager = CacheManager.getInstance();
 	
 	@Autowired
@@ -29,7 +29,7 @@ public class CommandDispatcher {
 	@PostConstruct
 	private void init() {
 		Command uidCommand = new UIDCommand(lineMessagingClient);
-		map.put(uidCommand.getCommandKey(), uidCommand);
+		mapSystemCommand.put(uidCommand.getCommandKey(), uidCommand);
 	}
 	
 	public void execute(MessageEvent<TextMessageContent> event) {
@@ -39,8 +39,8 @@ public class CommandDispatcher {
 			listAllCommand(event);
 		} else if(cacheManager.isCommandAvailable(commands[0])) {
 			getCache(event.getReplyToken(), commands);
-		} else if(map.containsKey(commands[0])) {
-			map.get(commands[0]).executeCommand(event);
+		} else if(mapSystemCommand.containsKey(commands[0])) {
+			mapSystemCommand.get(commands[0]).executeCommand(event);
 		}
 	}
 	
@@ -56,9 +56,9 @@ public class CommandDispatcher {
 	private void listAllCommand(MessageEvent<TextMessageContent> event) {
 		StringBuilder sb = new StringBuilder();
 		// implement command
-		for(String command : map.keySet()) {
+		for(String command : mapSystemCommand.keySet()) {
 			sb.append(command).append(": ");
-			sb.append(map.get(command).getDescription());
+			sb.append(mapSystemCommand.get(command).getDescription());
 			sb.append("\n");
 		}
 		// cache
