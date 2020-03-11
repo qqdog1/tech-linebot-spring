@@ -31,7 +31,7 @@ public class CacheManageService {
 	@PostConstruct
 	private void initCache() {
 		try {
-			googleDriveUtils = new GoogleDriveUtils("./config", "linebot");
+			googleDriveUtils = new GoogleDriveUtils("./config/credentials.json", "linebot");
 		} catch (Exception e) {
 			log.error("Init google drive utils failed.", e);
 		}
