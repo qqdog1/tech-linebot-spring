@@ -124,6 +124,7 @@ public class CacheManageService {
 	public String getAllDescription() {
 		StringBuilder sb = new StringBuilder();
 		Set<String> commands = getAllCommand();
+		if(commands == null) return "";
 		for(String command : commands) {
 			sb.append(command).append(": ").append(getDescription(cacheResult, command)).append("\n");
 		}
@@ -135,7 +136,10 @@ public class CacheManageService {
 	}
 	
 	public Set<String> getAllCommand() {
-		return cacheResult.keys();
+		if(cacheResult != null) {
+			cacheResult.keys();
+		}
+		return null;
 	}
 	
 	public boolean isCommandAvailable(String command) {
